@@ -1,0 +1,6 @@
+﻿<RunSettings>  
+    <TestRunParameters>
+        <Parameter name="orgId" value="{Put Your Organization ID Here}" />
+        <Parameter name="podiumKey" value="{Put Your Podium API Key Here}" />
+    </TestRunParameters>
+</RunSettings>  

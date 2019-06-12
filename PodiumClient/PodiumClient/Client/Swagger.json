@@ -1,0 +1,268 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.1",
+    "title" : "Podium API",
+    "description" : "----\n> The API enables you to GET and POST information to Podium. All of the APIs are RESTful endpoints. The The Podium API is bundled in with your current pricing.\n\n\n----\n# Authorization\n\nWe use basic authorization.\n    Authorization: \"token goes here\"\nThe API token can be found on the [Settings page](https://app.podium.com/#//settings)\n\n\n\nExamples\nAll requests are provided a code snippet in several languages. You can submit requests by running them through POSTMAN.\n\nPagination\nAll collection requests are paginated. You can page through the elements of the collection by making a \n\n# Help\nIf you need help, please contact Podium Support at [(833) 276-3486](833-276-3486) or by chatting in from the [Podium dashboard](app.podium.com).",
+    "contact" : { }
+  },
+  "host" : "platform.podium.com",
+  "basePath" : "/api/v2",
+  "securityDefinitions" : {
+    "Authorization" : {
+      "type" : "apiKey",
+      "description" : "",
+      "name" : "Authorization",
+      "in" : "header"
+    }
+  },
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/organizations/{orgId}/locations" : {
+      "get" : {
+        "description" : "This endpoint requires an organization Id. This Id will be given upon request by Podium.",
+        "summary" : "Fetch locations by Organization Id",
+        "tags" : [ "Organization", "Location" ],
+        "operationId" : "LocationsByOrgIdGet",
+        "deprecated" : false,
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The Organization ID"
+        }, {
+          "name" : "page[number]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "page[size]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "locations" : {
+                  "description" : "",
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/Location"
+                  }
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/Meta"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/locations/{locationId}/invites" : {
+      "get" : {
+        "tags" : [ "Invitation" ],
+        "summary" : "Get Invitations by Location",
+        "description" : "Returns all the Invitations sent for a given Location and optional date range. ",
+        "operationId" : "InvitationsByLocationGet",
+        "deprecated" : false,
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The Location ID"
+        }, {
+          "name" : "page[number]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "page[size]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "fromDate",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : "date",
+          "description" : ""
+        }, {
+          "name" : "toDate",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : "date",
+          "description" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "invites" : {
+                  "description" : "",
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/Invitation"
+                  }
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/Meta"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Invitation" : {
+      "title" : "Invitation",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "description" : "The Invitation ID",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "phoneNumber" : {
+          "description" : "The Phone number the invitation was sent to",
+          "type" : "string",
+          "pattern" : "^\\+?[1-9]\\d{1,14}$"
+        },
+        "lastInvitationSent" : {
+          "description" : "",
+          "type" : "boolean"
+        },
+        "organizationId" : {
+          "description" : "The Organization ID",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdAt" : {
+          "description" : "The Date and time the Invitation was created",
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updatedAt" : {
+          "description" : "The Date and time the Invitation was wupdated",
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "reviewPageUrl" : {
+          "description" : "",
+          "type" : "string",
+          "format" : "uri"
+        },
+        "userId" : {
+          "description" : "The User ID of the user that sent the invitation",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "test" : {
+          "description" : "",
+          "type" : "boolean"
+        },
+        "locationId" : {
+          "description" : "The Location ID",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "customerId" : {
+          "description" : "The ID of the customer",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "email" : {
+          "description" : "The customers email",
+          "type" : "string",
+          "format" : "email"
+        }
+      }
+    },
+    "Location" : {
+      "title" : "Location",
+      "type" : "object",
+      "properties" : {
+        "locationId" : {
+          "description" : "The Location ID.",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "locationName" : {
+          "description" : "The Location name.",
+          "type" : "string"
+        }
+      },
+      "required" : [ "locationId" ]
+    },
+    "Meta" : {
+      "title" : "Meta",
+      "type" : "object",
+      "properties" : {
+        "page" : {
+          "$ref" : "#/definitions/Page"
+        },
+        "totalItems" : {
+          "description" : "A",
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    },
+    "Page" : {
+      "title" : "Page",
+      "type" : "object",
+      "properties" : {
+        "number" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "size" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "total" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64"
+        }
+      }
+    }
+  },
+  "security" : [ {
+    "Authorization" : [ ]
+  } ],
+  "tags" : [ {
+    "name" : "Organization",
+    "description" : ""
+  } ]
+}
