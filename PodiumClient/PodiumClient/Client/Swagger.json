@@ -8,6 +8,9 @@
   },
   "host" : "platform.podium.com",
   "basePath" : "/api/v2",
+  "security" : [ {
+    "Authorization" : [ ]
+  } ],
   "securityDefinitions" : {
     "Authorization" : {
       "type" : "apiKey",
@@ -139,6 +142,103 @@
           }
         }
       }
+    },
+    "/users/{userId}/summary" : {
+      "get" : {
+        "tags" : [ "User" ],
+        "summary" : "Get Summary by User Id",
+        "description" : "Returns a summary for the User",
+        "operationId" : "SummaryByUserIdGet",
+        "deprecated" : false,
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The User ID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "summary" : {
+                  "$ref" : "#/definitions/Summary"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/locations/{locationId}/reviews" : {
+      "get" : {
+        "tags" : [ "Reviews" ],
+        "summary" : "Get Reviews by Location",
+        "description" : "Returns all the Invitations sent for a given Location and optional date range. ",
+        "operationId" : "ReviewsByLocationGet",
+        "parameters" : [ {
+          "name" : "locationId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "page[number]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "page[size]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "fromDate",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : "date",
+          "description" : ""
+        }, {
+          "name" : "toDate",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "format" : "date",
+          "description" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "reviews" : {
+                  "description" : "",
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/Review"
+                  }
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/Meta"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        },
+        "deprecated" : false
+      }
     }
   },
   "definitions" : {
@@ -256,11 +356,115 @@
           "format" : "int64"
         }
       }
+    },
+    "Review" : {
+      "title" : "Review",
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "description" : "The Review ID",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "siteReviewId" : {
+          "description" : "",
+          "type" : "string",
+          "example" : "AIe9_BFhqAtkXvUqdYNeMuBBGjaAfP1dwRMNJqBhfGoZ3jjQGAYvKSvgxBC1Tcid6lfxAZFPcp2PAbdIZSk-2TmAANNTgljfMu88GAX2a6BWmpOFxYITyyk"
+        },
+        "siteName" : {
+          "description" : "",
+          "type" : "string",
+          "example" : "facebook"
+        },
+        "locationId" : {
+          "description" : "The Location ID",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "createdAt" : {
+          "description" : "The Date and time the Invitation was created",
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "publishDate" : {
+          "description" : "The Date and time the Invitation was created",
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "updatedAt" : {
+          "description" : "The Date and time the Invitation was wupdated",
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "rating" : {
+          "description" : "",
+          "type" : "number",
+          "format" : "float",
+          "example" : 5.0
+        },
+        "reviewBody" : {
+          "description" : "",
+          "type" : "string",
+          "example" : "friendly and thurough service"
+        },
+        "reviewInvitationId" : {
+          "description" : "The Invitation Id",
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "reviewUrl" : {
+          "description" : "",
+          "type" : "string",
+          "format" : "uri"
+        },
+        "author" : {
+          "description" : "",
+          "type" : "string",
+          "example" : "John Doe"
+        },
+        "authorId" : {
+          "description" : "",
+          "type" : "string",
+          "example" : null
+        }
+      }
+    },
+    "Summary" : {
+      "title" : "Summary",
+      "type" : "object",
+      "properties" : {
+        "averageRating" : {
+          "description" : "",
+          "type" : "number",
+          "format" : "float",
+          "example" : 4.97
+        },
+        "clicked" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 19
+        },
+        "inviteCount" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 24
+        },
+        "recommended" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 3
+        },
+        "userName" : {
+          "description" : "The Users Username",
+          "type" : "string",
+          "example" : "John Doe"
+        }
+      }
     }
   },
-  "security" : [ {
-    "Authorization" : [ ]
-  } ],
   "tags" : [ {
     "name" : "Organization",
     "description" : ""

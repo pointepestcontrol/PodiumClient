@@ -660,6 +660,317 @@ namespace Podium.Client
             return _result;
         }
 
+        /// <summary>
+        /// Get Summary by User Id
+        /// </summary>
+        /// <remarks>
+        /// Returns a summary for the User
+        /// </remarks>
+        /// <param name='userId'>
+        /// The User ID
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async Task<HttpOperationResponse<SummaryByUserIdGetOKResponse>> SummaryByUserIdGetWithHttpMessagesAsync(long userId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Tracing
+            bool _shouldTrace = ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = ServiceClientTracing.NextInvocationId.ToString();
+                Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("userId", userId);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                ServiceClientTracing.Enter(_invocationId, this, "SummaryByUserIdGet", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "users/{userId}/summary").ToString();
+            _url = _url.Replace("{userId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(userId, SerializationSettings).Trim('"')));
+            // Create HTTP transport objects
+            var _httpRequest = new HttpRequestMessage();
+            HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+
+
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new HttpOperationResponse<SummaryByUserIdGetOKResponse>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<SummaryByUserIdGetOKResponse>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
+        /// <summary>
+        /// Get Reviews by Location
+        /// </summary>
+        /// <remarks>
+        /// Returns all the Invitations sent for a given Location and optional date
+        /// range.
+        /// </remarks>
+        /// <param name='locationId'>
+        /// </param>
+        /// <param name='pagenumber'>
+        /// </param>
+        /// <param name='pagesize'>
+        /// </param>
+        /// <param name='fromDate'>
+        /// </param>
+        /// <param name='toDate'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <exception cref="ValidationException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when a required parameter is null
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (locationId == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "locationId");
+            }
+            // Tracing
+            bool _shouldTrace = ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = ServiceClientTracing.NextInvocationId.ToString();
+                Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("locationId", locationId);
+                tracingParameters.Add("pagenumber", pagenumber);
+                tracingParameters.Add("pagesize", pagesize);
+                tracingParameters.Add("fromDate", fromDate);
+                tracingParameters.Add("toDate", toDate);
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                ServiceClientTracing.Enter(_invocationId, this, "ReviewsByLocationGet", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "locations/{locationId}/reviews").ToString();
+            _url = _url.Replace("{locationId}", System.Uri.EscapeDataString(locationId));
+            List<string> _queryParameters = new List<string>();
+            if (pagenumber != null)
+            {
+                _queryParameters.Add(string.Format("page[number]={0}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(pagenumber, SerializationSettings).Trim('"'))));
+            }
+            if (pagesize != null)
+            {
+                _queryParameters.Add(string.Format("page[size]={0}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(pagesize, SerializationSettings).Trim('"'))));
+            }
+            if (fromDate != null)
+            {
+                _queryParameters.Add(string.Format("fromDate={0}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(fromDate, new DateJsonConverter()).Trim('"'))));
+            }
+            if (toDate != null)
+            {
+                _queryParameters.Add(string.Format("toDate={0}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(toDate, new DateJsonConverter()).Trim('"'))));
+            }
+            if (_queryParameters.Count > 0)
+            {
+                _url += "?" + string.Join("&", _queryParameters);
+            }
+            // Create HTTP transport objects
+            var _httpRequest = new HttpRequestMessage();
+            HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+
+
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new HttpOperationResponse<ReviewsByLocationGetOKResponse>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<ReviewsByLocationGetOKResponse>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
     }
 }
 // <auto-generated>
@@ -782,6 +1093,48 @@ namespace Podium.Client
         /// The cancellation token.
         /// </param>
         Task<HttpOperationResponse<InvitationsByLocationGetOKResponse>> InvitationsByLocationGetWithHttpMessagesAsync(long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Get Summary by User Id
+        /// </summary>
+        /// <remarks>
+        /// Returns a summary for the User
+        /// </remarks>
+        /// <param name='userId'>
+        /// The User ID
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<SummaryByUserIdGetOKResponse>> SummaryByUserIdGetWithHttpMessagesAsync(long userId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Get Reviews by Location
+        /// </summary>
+        /// <remarks>
+        /// Returns all the Invitations sent for a given Location and optional
+        /// date range.
+        /// </remarks>
+        /// <param name='locationId'>
+        /// </param>
+        /// <param name='pagenumber'>
+        /// </param>
+        /// <param name='pagesize'>
+        /// </param>
+        /// <param name='fromDate'>
+        /// </param>
+        /// <param name='toDate'>
+        /// </param>
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }
@@ -912,6 +1265,102 @@ namespace Podium.Client
             public static async Task<InvitationsByLocationGetOKResponse> InvitationsByLocationGetAsync(this IPodiumAPI operations, long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.InvitationsByLocationGetWithHttpMessagesAsync(locationId, pagenumber, pagesize, fromDate, toDate, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Get Summary by User Id
+            /// </summary>
+            /// <remarks>
+            /// Returns a summary for the User
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='userId'>
+            /// The User ID
+            /// </param>
+            public static SummaryByUserIdGetOKResponse SummaryByUserIdGet(this IPodiumAPI operations, long userId)
+            {
+                return operations.SummaryByUserIdGetAsync(userId).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get Summary by User Id
+            /// </summary>
+            /// <remarks>
+            /// Returns a summary for the User
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='userId'>
+            /// The User ID
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<SummaryByUserIdGetOKResponse> SummaryByUserIdGetAsync(this IPodiumAPI operations, long userId, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.SummaryByUserIdGetWithHttpMessagesAsync(userId, null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
+            /// <summary>
+            /// Get Reviews by Location
+            /// </summary>
+            /// <remarks>
+            /// Returns all the Invitations sent for a given Location and optional date
+            /// range.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='locationId'>
+            /// </param>
+            /// <param name='pagenumber'>
+            /// </param>
+            /// <param name='pagesize'>
+            /// </param>
+            /// <param name='fromDate'>
+            /// </param>
+            /// <param name='toDate'>
+            /// </param>
+            public static ReviewsByLocationGetOKResponse ReviewsByLocationGet(this IPodiumAPI operations, string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?))
+            {
+                return operations.ReviewsByLocationGetAsync(locationId, pagenumber, pagesize, fromDate, toDate).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get Reviews by Location
+            /// </summary>
+            /// <remarks>
+            /// Returns all the Invitations sent for a given Location and optional date
+            /// range.
+            /// </remarks>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='locationId'>
+            /// </param>
+            /// <param name='pagenumber'>
+            /// </param>
+            /// <param name='pagesize'>
+            /// </param>
+            /// <param name='fromDate'>
+            /// </param>
+            /// <param name='toDate'>
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<ReviewsByLocationGetOKResponse> ReviewsByLocationGetAsync(this IPodiumAPI operations, string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.ReviewsByLocationGetWithHttpMessagesAsync(locationId, pagenumber, pagesize, fromDate, toDate, null, cancellationToken).ConfigureAwait(false))
                 {
                     return _result.Body;
                 }
@@ -1294,6 +1743,225 @@ namespace Podium.Client.Models
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Review
+    /// </summary>
+    public partial class Review
+    {
+        /// <summary>
+        /// Initializes a new instance of the Review class.
+        /// </summary>
+        public Review()
+        {
+            CustomInit();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Review class.
+        /// </summary>
+        /// <param name="id">The Review ID</param>
+        /// <param name="locationId">The Location ID</param>
+        /// <param name="createdAt">The Date and time the Invitation was
+        /// created</param>
+        /// <param name="publishDate">The Date and time the Invitation was
+        /// created</param>
+        /// <param name="updatedAt">The Date and time the Invitation was
+        /// wupdated</param>
+        /// <param name="reviewInvitationId">The Invitation Id</param>
+        public Review(long? id = default(long?), string siteReviewId = default(string), string siteName = default(string), long? locationId = default(long?), System.DateTime? createdAt = default(System.DateTime?), System.DateTime? publishDate = default(System.DateTime?), System.DateTime? updatedAt = default(System.DateTime?), double? rating = default(double?), string reviewBody = default(string), long? reviewInvitationId = default(long?), string reviewUrl = default(string), string author = default(string), string authorId = default(string))
+        {
+            Id = id;
+            SiteReviewId = siteReviewId;
+            SiteName = siteName;
+            LocationId = locationId;
+            CreatedAt = createdAt;
+            PublishDate = publishDate;
+            UpdatedAt = updatedAt;
+            Rating = rating;
+            ReviewBody = reviewBody;
+            ReviewInvitationId = reviewInvitationId;
+            ReviewUrl = reviewUrl;
+            Author = author;
+            AuthorId = authorId;
+            CustomInit();
+        }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
+
+        /// <summary>
+        /// Gets or sets the Review ID
+        /// </summary>
+        [JsonProperty(PropertyName = "id")]
+        public long? Id { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "siteReviewId")]
+        public string SiteReviewId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "siteName")]
+        public string SiteName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Location ID
+        /// </summary>
+        [JsonProperty(PropertyName = "locationId")]
+        public long? LocationId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Date and time the Invitation was created
+        /// </summary>
+        [JsonProperty(PropertyName = "createdAt")]
+        public System.DateTime? CreatedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Date and time the Invitation was created
+        /// </summary>
+        [JsonProperty(PropertyName = "publishDate")]
+        public System.DateTime? PublishDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Date and time the Invitation was wupdated
+        /// </summary>
+        [JsonProperty(PropertyName = "updatedAt")]
+        public System.DateTime? UpdatedAt { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "rating")]
+        public double? Rating { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "reviewBody")]
+        public string ReviewBody { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Invitation Id
+        /// </summary>
+        [JsonProperty(PropertyName = "reviewInvitationId")]
+        public long? ReviewInvitationId { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "reviewUrl")]
+        public string ReviewUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "author")]
+        public string Author { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "authorId")]
+        public string AuthorId { get; set; }
+
+    }
+}
+// <auto-generated>
+// Code generated by Microsoft (R) AutoRest Code Generator.
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+// </auto-generated>
+
+namespace Podium.Client.Models
+{
+    using Microsoft.Rest;
+    using Microsoft.Rest.Serialization;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// Summary
+    /// </summary>
+    public partial class Summary
+    {
+        /// <summary>
+        /// Initializes a new instance of the Summary class.
+        /// </summary>
+        public Summary()
+        {
+            CustomInit();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Summary class.
+        /// </summary>
+        /// <param name="userName">The Users Username</param>
+        public Summary(double? averageRating = default(double?), long? clicked = default(long?), long? inviteCount = default(long?), long? recommended = default(long?), string userName = default(string))
+        {
+            AverageRating = averageRating;
+            Clicked = clicked;
+            InviteCount = inviteCount;
+            Recommended = recommended;
+            UserName = userName;
+            CustomInit();
+        }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "averageRating")]
+        public double? AverageRating { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "clicked")]
+        public long? Clicked { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "inviteCount")]
+        public long? InviteCount { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "recommended")]
+        public long? Recommended { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Users Username
+        /// </summary>
+        [JsonProperty(PropertyName = "userName")]
+        public string UserName { get; set; }
+
+    }
+}
+// <auto-generated>
+// Code generated by Microsoft (R) AutoRest Code Generator.
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+// </auto-generated>
+
+namespace Podium.Client.Models
+{
+    using Microsoft.Rest;
+    using Microsoft.Rest.Serialization;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public partial class LocationsByOrgIdGetOKResponse
     {
         /// <summary>
@@ -1383,6 +2051,116 @@ namespace Podium.Client.Models
         /// </summary>
         [JsonProperty(PropertyName = "invites")]
         public IList<Invitation> Invites { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "meta")]
+        public Meta Meta { get; set; }
+
+    }
+}
+// <auto-generated>
+// Code generated by Microsoft (R) AutoRest Code Generator.
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+// </auto-generated>
+
+namespace Podium.Client.Models
+{
+    using Microsoft.Rest;
+    using Microsoft.Rest.Serialization;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    public partial class SummaryByUserIdGetOKResponse
+    {
+        /// <summary>
+        /// Initializes a new instance of the SummaryByUserIdGetOKResponse
+        /// class.
+        /// </summary>
+        public SummaryByUserIdGetOKResponse()
+        {
+            CustomInit();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the SummaryByUserIdGetOKResponse
+        /// class.
+        /// </summary>
+        public SummaryByUserIdGetOKResponse(Summary summary = default(Summary))
+        {
+            Summary = summary;
+            CustomInit();
+        }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "summary")]
+        public Summary Summary { get; set; }
+
+    }
+}
+// <auto-generated>
+// Code generated by Microsoft (R) AutoRest Code Generator.
+// Changes may cause incorrect behavior and will be lost if the code is
+// regenerated.
+// </auto-generated>
+
+namespace Podium.Client.Models
+{
+    using Microsoft.Rest;
+    using Microsoft.Rest.Serialization;
+    using Newtonsoft.Json;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    public partial class ReviewsByLocationGetOKResponse
+    {
+        /// <summary>
+        /// Initializes a new instance of the ReviewsByLocationGetOKResponse
+        /// class.
+        /// </summary>
+        public ReviewsByLocationGetOKResponse()
+        {
+            CustomInit();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ReviewsByLocationGetOKResponse
+        /// class.
+        /// </summary>
+        public ReviewsByLocationGetOKResponse(IList<Review> reviews = default(IList<Review>), Meta meta = default(Meta))
+        {
+            Reviews = reviews;
+            Meta = meta;
+            CustomInit();
+        }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "reviews")]
+        public IList<Review> Reviews { get; set; }
 
         /// <summary>
         /// </summary>
