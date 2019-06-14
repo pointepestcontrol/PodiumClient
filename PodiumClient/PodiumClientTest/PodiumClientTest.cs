@@ -14,12 +14,16 @@ namespace PodiumClientTest
     {
         private PodiumAPI Client { get; set; }
         private long OrgId { get; set; }
+        private long UserId { get; set; }
+        private string UserName { get; set; }
 
         [SetUp]
         public void Setup()
         {
             Client = new PodiumAPI(new PodiumCredentials(TestContext.Parameters["podiumKey"]));
             OrgId = long.Parse(TestContext.Parameters["orgId"]);
+            UserId = long.Parse(TestContext.Parameters["userId"]);
+            UserName = TestContext.Parameters["userName"];
         }
 
         [Test]
@@ -85,6 +89,61 @@ namespace PodiumClientTest
             {
                 Assert.Contains(invite, invitationResponse2.Invites.ToArray());
             }
+        }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        public async Task TestGetInvitationsWithPageSize(long pageSize)
+        {
+
+            LocationsByOrgIdGetOKResponse response = await Client.LocationsByOrgIdGetAsync(OrgId);
+            Assert.NotNull(response.Locations);
+            Assert.IsNotEmpty(response.Locations);
+            var location = TestContext.CurrentContext.Random.Next(response.Locations.Count - 1);
+            InvitationsByLocationGetOKResponse invitationResponse = await Client.InvitationsByLocationGetAsync(response.Locations[location].LocationId, 1, pageSize);
+            Assert.That(invitationResponse.Invites, Is.Unique);
+            Assert.LessOrEqual(invitationResponse.Invites.Count, pageSize);
+        }
+        [Test]
+        public async Task TestGetInvitationsWithDateRange()
+        {
+            LocationsByOrgIdGetOKResponse response = await Client.LocationsByOrgIdGetAsync(OrgId);
+            Assert.NotNull(response.Locations);
+            Assert.IsNotEmpty(response.Locations);
+            var location = TestContext.CurrentContext.Random.Next(response.Locations.Count - 1);
+            DateTime fromDate = DateTime.Now.AddDays(-30).Date;
+            DateTime toDate = DateTime.Now.AddDays(-15).Date;
+            InvitationsByLocationGetOKResponse invitationResponse = await Client.InvitationsByLocationGetAsync(response.Locations[location].LocationId, fromDate: fromDate, toDate: toDate);
+            foreach(var invite in invitationResponse.Invites)
+            {
+                Assert.GreaterOrEqual(invite.CreatedAt, fromDate);
+                Assert.LessOrEqual(invite.CreatedAt, toDate);
+            }
+        }
+
+        [Test] public async Task TestGetUserSummary()
+        {
+            var response = await Client.SummaryByUserIdGetAsync(UserId);
+            Assert.NotNull(response.Summary);
+            if (response.Summary.AverageRating.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.AverageRating, 0.0);
+                Assert.LessOrEqual(response.Summary.AverageRating, 5.0);
+            }
+            if (response.Summary.Clicked.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.Clicked, 0);
+            }
+            Assert.GreaterOrEqual(response.Summary.InviteCount, 0);
+            if (response.Summary.Recommended.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.Recommended, 0);
+            }
+            Assert.AreEqual(UserName, response.Summary.UserName);
+
         }
     }
 }
