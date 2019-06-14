@@ -14,12 +14,16 @@ namespace PodiumClientTest
     {
         private PodiumAPI Client { get; set; }
         private long OrgId { get; set; }
+        private long UserId { get; set; }
+        private string UserName { get; set; }
 
         [SetUp]
         public void Setup()
         {
             Client = new PodiumAPI(new PodiumCredentials(TestContext.Parameters["podiumKey"]));
             OrgId = long.Parse(TestContext.Parameters["orgId"]);
+            UserId = long.Parse(TestContext.Parameters["userId"]);
+            UserName = TestContext.Parameters["userName"];
         }
 
         [Test]
@@ -118,6 +122,28 @@ namespace PodiumClientTest
                 Assert.GreaterOrEqual(invite.CreatedAt, fromDate);
                 Assert.LessOrEqual(invite.CreatedAt, toDate);
             }
+        }
+
+        [Test] public async Task TestGetUserSummary()
+        {
+            var response = await Client.SummaryByUserIdGetAsync(UserId);
+            Assert.NotNull(response.Summary);
+            if (response.Summary.AverageRating.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.AverageRating, 0.0);
+                Assert.LessOrEqual(response.Summary.AverageRating, 5.0);
+            }
+            if (response.Summary.Clicked.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.Clicked, 0);
+            }
+            Assert.GreaterOrEqual(response.Summary.InviteCount, 0);
+            if (response.Summary.Recommended.HasValue)
+            {
+                Assert.GreaterOrEqual(response.Summary.Recommended, 0);
+            }
+            Assert.AreEqual(UserName, response.Summary.UserName);
+
         }
     }
 }
