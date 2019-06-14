@@ -86,5 +86,38 @@ namespace PodiumClientTest
                 Assert.Contains(invite, invitationResponse2.Invites.ToArray());
             }
         }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        public async Task TestGetInvitationsWithPageSize(long pageSize)
+        {
+
+            LocationsByOrgIdGetOKResponse response = await Client.LocationsByOrgIdGetAsync(OrgId);
+            Assert.NotNull(response.Locations);
+            Assert.IsNotEmpty(response.Locations);
+            var location = TestContext.CurrentContext.Random.Next(response.Locations.Count - 1);
+            InvitationsByLocationGetOKResponse invitationResponse = await Client.InvitationsByLocationGetAsync(response.Locations[location].LocationId, 1, pageSize);
+            Assert.That(invitationResponse.Invites, Is.Unique);
+            Assert.LessOrEqual(invitationResponse.Invites.Count, pageSize);
+        }
+        [Test]
+        public async Task TestGetInvitationsWithDateRange()
+        {
+            LocationsByOrgIdGetOKResponse response = await Client.LocationsByOrgIdGetAsync(OrgId);
+            Assert.NotNull(response.Locations);
+            Assert.IsNotEmpty(response.Locations);
+            var location = TestContext.CurrentContext.Random.Next(response.Locations.Count - 1);
+            DateTime fromDate = DateTime.Now.AddDays(-30).Date;
+            DateTime toDate = DateTime.Now.AddDays(-15).Date;
+            InvitationsByLocationGetOKResponse invitationResponse = await Client.InvitationsByLocationGetAsync(response.Locations[location].LocationId, fromDate: fromDate, toDate: toDate);
+            foreach(var invite in invitationResponse.Invites)
+            {
+                Assert.GreaterOrEqual(invite.CreatedAt, fromDate);
+                Assert.LessOrEqual(invite.CreatedAt, toDate);
+            }
+        }
     }
 }
