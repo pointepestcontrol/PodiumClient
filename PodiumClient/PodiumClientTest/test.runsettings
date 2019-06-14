@@ -2,5 +2,7 @@
     <TestRunParameters>
         <Parameter name="orgId" value="{Put Your Organization ID Here}" />
         <Parameter name="podiumKey" value="{Put Your Podium API Key Here}" />
+        <Parameter name="userId" value="{Put A valid User Id Here}" />
+        <Parameter name="userName" value="{Put The User Name for the above User Here}" />
     </TestRunParameters>
 </RunSettings>  
