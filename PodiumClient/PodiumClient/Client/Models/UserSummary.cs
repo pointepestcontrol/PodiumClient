@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Podium.Client.Models
 {
-    public partial class Summary
+    public partial class UserSummary
     {
         public override bool Equals(object obj)
         {
-            return obj is Summary summary &&
+            return obj is UserSummary summary &&
                    EqualityComparer<double?>.Default.Equals(AverageRating, summary.AverageRating) &&
                    EqualityComparer<long?>.Default.Equals(Clicked, summary.Clicked) &&
                    EqualityComparer<long?>.Default.Equals(InviteCount, summary.InviteCount) &&
@@ -27,12 +27,12 @@ namespace Podium.Client.Models
             return hashCode;
         }
 
-        public static bool operator ==(Summary left, Summary right)
+        public static bool operator ==(UserSummary left, UserSummary right)
         {
-            return EqualityComparer<Summary>.Default.Equals(left, right);
+            return EqualityComparer<UserSummary>.Default.Equals(left, right);
         }
 
-        public static bool operator !=(Summary left, Summary right)
+        public static bool operator !=(UserSummary left, UserSummary right)
         {
             return !(left == right);
         }

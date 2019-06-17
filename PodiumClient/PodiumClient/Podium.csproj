@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageId>PodiumClientSDK</PackageId>
+    <Authors>Tyrel Alastair Hunter</Authors>
+    <Company>Pointe Pest Control LLC -IL</Company>
+    <Product>PodiumC</Product>
+    <Description>C# .net Client SDK Library for integrating with podium reviews.</Description>
+    <PackageProjectUrl>https://github.com/pointepestcontrol/PodiumClient</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pointepestcontrol/PodiumClient</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
