@@ -166,7 +166,39 @@
               "type" : "object",
               "properties" : {
                 "summary" : {
-                  "$ref" : "#/definitions/Summary"
+                  "$ref" : "#/definitions/UserSummary"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/locations/{locationId}/summary" : {
+      "get" : {
+        "tags" : [ "Location" ],
+        "summary" : "Get Summary by Location Id",
+        "description" : "Returns a summary for the Location",
+        "operationId" : "SummaryByLocationIdGet",
+        "deprecated" : false,
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The Location ID"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "summary" : {
+                  "$ref" : "#/definitions/LocationSummary"
                 }
               }
             },
@@ -238,6 +270,59 @@
           }
         },
         "deprecated" : false
+      }
+    },
+    "/locations/{locationId}/sites/summary" : {
+      "get" : {
+        "tags" : [ "Location" ],
+        "summary" : "Get Summaries for websites by Location Id",
+        "description" : "Returns the summaries for websites linked to the given Location",
+        "operationId" : "SiteSummaryByLocationIdGet",
+        "deprecated" : false,
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "The Location ID"
+        }, {
+          "name" : "page[number]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        }, {
+          "name" : "page[size]",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "format" : "int64",
+          "description" : ""
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "siteSummary" : {
+                  "description" : "",
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/SiteSummary"
+                  }
+                },
+                "meta" : {
+                  "$ref" : "#/definitions/Meta"
+                }
+              }
+            },
+            "headers" : { }
+          }
+        }
       }
     }
   },
@@ -429,8 +514,31 @@
         }
       }
     },
-    "Summary" : {
-      "title" : "Summary",
+    "SiteSummary" : {
+      "title" : "SiteSummary",
+      "type" : "object",
+      "properties" : {
+        "averageRating" : {
+          "description" : "",
+          "type" : "number",
+          "format" : "float",
+          "example" : 4.94
+        },
+        "reviewCount" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 146
+        },
+        "siteName" : {
+          "description" : "",
+          "type" : "string",
+          "example" : "facebook"
+        }
+      }
+    },
+    "UserSummary" : {
+      "title" : "UserSummary",
       "type" : "object",
       "properties" : {
         "averageRating" : {
@@ -461,6 +569,42 @@
           "description" : "The Users Username",
           "type" : "string",
           "example" : "John Doe"
+        }
+      }
+    },
+    "LocationSummary" : {
+      "title" : "LocationSummary",
+      "type" : "object",
+      "properties" : {
+        "averageRating" : {
+          "description" : "",
+          "type" : "number",
+          "format" : "float",
+          "example" : 4.97
+        },
+        "clickRate" : {
+          "description" : "",
+          "type" : "number",
+          "format" : "float",
+          "example" : 41.12
+        },
+        "inviteCount" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 5749
+        },
+        "recommended" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 1367
+        },
+        "totalReviews" : {
+          "description" : "",
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 2574
         }
       }
     }
