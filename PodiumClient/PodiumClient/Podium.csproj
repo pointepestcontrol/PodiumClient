@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/pointepestcontrol/PodiumClient</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pointepestcontrol/PodiumClient</RepositoryUrl>
     <NeutralLanguage>en</NeutralLanguage>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
