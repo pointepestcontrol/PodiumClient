@@ -218,7 +218,8 @@
           "in" : "path",
           "description" : "",
           "required" : true,
-          "type" : "string"
+          "type" : "integer",
+          "format" : "int64"
         }, {
           "name" : "page[number]",
           "in" : "query",
@@ -389,7 +390,8 @@
           "type" : "string",
           "format" : "email"
         }
-      }
+      },
+      "required" : [ "id", "lastInvitationSent", "locationId", "customerId", "organizationId", "userId", "createdAt", "updatedAt", "test" ]
     },
     "Location" : {
       "title" : "Location",
@@ -512,7 +514,8 @@
           "type" : "string",
           "example" : null
         }
-      }
+      },
+      "required" : [ "id", "rating", "createdAt", "updatedAt", "publishDate", "locationId" ]
     },
     "SiteSummary" : {
       "title" : "SiteSummary",

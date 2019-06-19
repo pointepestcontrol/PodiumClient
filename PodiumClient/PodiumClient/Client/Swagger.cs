@@ -957,21 +957,11 @@ namespace Podium.Client
         /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
-        /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (locationId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "locationId");
-            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -990,7 +980,7 @@ namespace Podium.Client
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "locations/{locationId}/reviews").ToString();
-            _url = _url.Replace("{locationId}", System.Uri.EscapeDataString(locationId));
+            _url = _url.Replace("{locationId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(locationId, SerializationSettings).Trim('"')));
             List<string> _queryParameters = new List<string>();
             if (pagenumber != null)
             {
@@ -1438,7 +1428,7 @@ namespace Podium.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<ReviewsByLocationGetOKResponse>> ReviewsByLocationGetWithHttpMessagesAsync(long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Get Summaries for websites by Location Id
@@ -1695,7 +1685,7 @@ namespace Podium.Client
             /// </param>
             /// <param name='toDate'>
             /// </param>
-            public static ReviewsByLocationGetOKResponse ReviewsByLocationGet(this IPodiumAPI operations, string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?))
+            public static ReviewsByLocationGetOKResponse ReviewsByLocationGet(this IPodiumAPI operations, long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?))
             {
                 return operations.ReviewsByLocationGetAsync(locationId, pagenumber, pagesize, fromDate, toDate).GetAwaiter().GetResult();
             }
@@ -1723,7 +1713,7 @@ namespace Podium.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ReviewsByLocationGetOKResponse> ReviewsByLocationGetAsync(this IPodiumAPI operations, string locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ReviewsByLocationGetOKResponse> ReviewsByLocationGetAsync(this IPodiumAPI operations, long locationId, long? pagenumber = default(long?), long? pagesize = default(long?), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.ReviewsByLocationGetWithHttpMessagesAsync(locationId, pagenumber, pagesize, fromDate, toDate, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -1817,8 +1807,6 @@ namespace Podium.Client.Models
         /// Initializes a new instance of the Invitation class.
         /// </summary>
         /// <param name="id">The Invitation ID</param>
-        /// <param name="phoneNumber">The Phone number the invitation was sent
-        /// to</param>
         /// <param name="organizationId">The Organization ID</param>
         /// <param name="createdAt">The Date and time the Invitation was
         /// created</param>
@@ -1828,8 +1816,10 @@ namespace Podium.Client.Models
         /// invitation</param>
         /// <param name="locationId">The Location ID</param>
         /// <param name="customerId">The ID of the customer</param>
+        /// <param name="phoneNumber">The Phone number the invitation was sent
+        /// to</param>
         /// <param name="email">The customers email</param>
-        public Invitation(long? id = default(long?), string phoneNumber = default(string), bool? lastInvitationSent = default(bool?), long? organizationId = default(long?), System.DateTime? createdAt = default(System.DateTime?), System.DateTime? updatedAt = default(System.DateTime?), string reviewPageUrl = default(string), long? userId = default(long?), bool? test = default(bool?), long? locationId = default(long?), long? customerId = default(long?), string email = default(string))
+        public Invitation(long id, bool lastInvitationSent, long organizationId, System.DateTime createdAt, System.DateTime updatedAt, long userId, bool test, long locationId, long customerId, string phoneNumber = default(string), string reviewPageUrl = default(string), string email = default(string))
         {
             Id = id;
             PhoneNumber = phoneNumber;
@@ -1855,7 +1845,7 @@ namespace Podium.Client.Models
         /// Gets or sets the Invitation ID
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Phone number the invitation was sent to
@@ -1866,25 +1856,25 @@ namespace Podium.Client.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "lastInvitationSent")]
-        public bool? LastInvitationSent { get; set; }
+        public bool LastInvitationSent { get; set; }
 
         /// <summary>
         /// Gets or sets the Organization ID
         /// </summary>
         [JsonProperty(PropertyName = "organizationId")]
-        public long? OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
 
         /// <summary>
         /// Gets or sets the Date and time the Invitation was created
         /// </summary>
         [JsonProperty(PropertyName = "createdAt")]
-        public System.DateTime? CreatedAt { get; set; }
+        public System.DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the Date and time the Invitation was wupdated
         /// </summary>
         [JsonProperty(PropertyName = "updatedAt")]
-        public System.DateTime? UpdatedAt { get; set; }
+        public System.DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// </summary>
@@ -1895,24 +1885,24 @@ namespace Podium.Client.Models
         /// Gets or sets the User ID of the user that sent the invitation
         /// </summary>
         [JsonProperty(PropertyName = "userId")]
-        public long? UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "test")]
-        public bool? Test { get; set; }
+        public bool Test { get; set; }
 
         /// <summary>
         /// Gets or sets the Location ID
         /// </summary>
         [JsonProperty(PropertyName = "locationId")]
-        public long? LocationId { get; set; }
+        public long LocationId { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the customer
         /// </summary>
         [JsonProperty(PropertyName = "customerId")]
-        public long? CustomerId { get; set; }
+        public long CustomerId { get; set; }
 
         /// <summary>
         /// Gets or sets the customers email
@@ -2181,7 +2171,7 @@ namespace Podium.Client.Models
         /// <param name="updatedAt">The Date and time the Invitation was
         /// wupdated</param>
         /// <param name="reviewInvitationId">The Invitation Id</param>
-        public Review(long? id = default(long?), string siteReviewId = default(string), string siteName = default(string), long? locationId = default(long?), System.DateTime? createdAt = default(System.DateTime?), System.DateTime? publishDate = default(System.DateTime?), System.DateTime? updatedAt = default(System.DateTime?), double? rating = default(double?), string reviewBody = default(string), long? reviewInvitationId = default(long?), string reviewUrl = default(string), string author = default(string), string authorId = default(string))
+        public Review(long id, long locationId, System.DateTime createdAt, System.DateTime publishDate, System.DateTime updatedAt, double rating, string siteReviewId = default(string), string siteName = default(string), string reviewBody = default(string), long? reviewInvitationId = default(long?), string reviewUrl = default(string), string author = default(string), string authorId = default(string))
         {
             Id = id;
             SiteReviewId = siteReviewId;
@@ -2208,7 +2198,7 @@ namespace Podium.Client.Models
         /// Gets or sets the Review ID
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2224,30 +2214,30 @@ namespace Podium.Client.Models
         /// Gets or sets the Location ID
         /// </summary>
         [JsonProperty(PropertyName = "locationId")]
-        public long? LocationId { get; set; }
+        public long LocationId { get; set; }
 
         /// <summary>
         /// Gets or sets the Date and time the Invitation was created
         /// </summary>
         [JsonProperty(PropertyName = "createdAt")]
-        public System.DateTime? CreatedAt { get; set; }
+        public System.DateTime CreatedAt { get; set; }
 
         /// <summary>
         /// Gets or sets the Date and time the Invitation was created
         /// </summary>
         [JsonProperty(PropertyName = "publishDate")]
-        public System.DateTime? PublishDate { get; set; }
+        public System.DateTime PublishDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Date and time the Invitation was wupdated
         /// </summary>
         [JsonProperty(PropertyName = "updatedAt")]
-        public System.DateTime? UpdatedAt { get; set; }
+        public System.DateTime UpdatedAt { get; set; }
 
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "rating")]
-        public double? Rating { get; set; }
+        public double Rating { get; set; }
 
         /// <summary>
         /// </summary>
@@ -2275,6 +2265,16 @@ namespace Podium.Client.Models
         [JsonProperty(PropertyName = "authorId")]
         public string AuthorId { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            //Nothing to validate
+        }
     }
 }
 // <auto-generated>
