@@ -1,22 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageId>PodiumClientSDK</PackageId>
     <Authors>Tyrel Alastair Hunter</Authors>
     <Company>Pointe Pest Control LLC -IL</Company>
     <Product>PodiumC</Product>
-    <Description>C# .net Client SDK Library for integrating with podium reviews.</Description>
+    <Description>C# .net Client SDK Library for integrating with podium reviews.
+https://www.podium.com
+https://pointepestcontrol.net
+https://greenpestservices.net
+
+Developed by Pointe Pest Control -IL, LLC</Description>
     <PackageProjectUrl>https://github.com/pointepestcontrol/PodiumClient</PackageProjectUrl>
     <RepositoryUrl>https://github.com/pointepestcontrol/PodiumClient</RepositoryUrl>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>1.0.1</Version>
+    <Version>3.0.0</Version>
+    <PackageReleaseNotes>This Version supports .netcore 3.x</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.20" />
+    <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.21" />
   </ItemGroup>
 
   <ItemGroup>
